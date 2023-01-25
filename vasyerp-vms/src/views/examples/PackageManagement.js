@@ -116,7 +116,7 @@ const PackageManagement = () => {
   const [packageEdit, setPackageEdit] = useState([])
 
   const updatePackage = async(e)=>{
-    e.preventDefault();
+    // e.preventDefault();
     const data = {
       packageTitle : name,
       packageId : pId,
@@ -133,6 +133,7 @@ const PackageManagement = () => {
         "Access-Control-Allow-Methods" : "GET,PUT,POST,DELETE,PATCH,OPTIONS"
       }
     },
+    console.log(data)
     )
     .then(data=>{
         response = data;
@@ -140,11 +141,13 @@ const PackageManagement = () => {
         console.log(response);
     })
 }
-  function handleClick(e,f,g,h){
+  function handleClick(e,f,g,h,i){
+    setPId(i)
     setName(e)
     setPrice(f)
     setValidity(g)
     setNoOfDev(h)
+    console.log(i)
     console.log(e)
     console.log(f)
     console.log(g)
@@ -218,7 +221,7 @@ const PackageManagement = () => {
                             <DropdownItem
                             href="#pablo"
                             type="button"
-                            onClick={(e, f, g, h)=>handleClick(pack.packageTitle, pack.packagePrice, pack.validity, pack.numberOfDevices)}
+                            onClick={(e, f, g, h, i)=>handleClick(pack.packageTitle, pack.packagePrice, pack.validity, pack.numberOfDevices, pack.packageId)}
                             data-bs-toggle="modal" data-bs-target={`#editBack${index}`}
                             >
                             Edit
