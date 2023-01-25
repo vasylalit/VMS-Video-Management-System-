@@ -65,7 +65,7 @@ exports.findOne = (req, res)=>{
     })
 }
 
-// To get all the categories which having "is_deleted" = 0 (by default)
+// To get all the categories which having "is_deleted" = 1
 exports.findAllCategories = async(req, res) =>{
     const catObj ={}
     try{

@@ -97,28 +97,32 @@ const PackageManagement = () => {
   }
 
   // Update API Start
-  const [packageAddEdit, setPackageAddEdit] = useState("")
+  // const showHidePackageFormHandler = async(type, status, value, pName, pacid)=>{
+  //   if(status === "edit"){
+  //     setAddEditBtn(true)
+  //   }else{
+  //     setAddEditBtn(false)
+  //   }
+  //   if(type === "show"){
+  //     setPackageAddEdit(value);
+  //     setName(pName);
+  //     setPId(pacid);
+  //   }
+  //   else{
+  //     setPackageAddEdit(false)
+  //   }
+  // };
 
-  const showHidePackageFormHandler = async(type, status, value, pName, pacid)=>{
-    if(status === "edit"){
-      setAddEditBtn(true)
-    }else{
-      setAddEditBtn(false)
-    }
-    if(type === "show"){
-      setPackageAddEdit(value);
-      setName(pName);
-      setPId(pacid);
-    }
-    else{
-      setPackageAddEdit(false)
-    }
-  };
+  const [packageEdit, setPackageEdit] = useState([])
+
   const updatePackage = async(e)=>{
     e.preventDefault();
     const data = {
       packageTitle : name,
-      packageId : pId
+      packageId : pId,
+      packagePrice: price,
+      validity : validity,
+      numberOfDevices : noOfDev
     }
     var response = "";
     await axios.put(`http://localhost:9090/package/${data.packageId}`, data, {
@@ -131,10 +135,34 @@ const PackageManagement = () => {
     },
     )
     .then(data=>{
-      response = data;
-      fetchData();
-      console.log(response);
+        response = data;
+        fetchData();
+        console.log(response);
     })
+}
+  function handleClick(e,f,g,h){
+    setName(e)
+    setPrice(f)
+    setValidity(g)
+    setNoOfDev(h)
+    console.log(e)
+    console.log(f)
+    console.log(g)
+    console.log(h)
+  }
+
+  
+  function handleName(e){
+    setName(e)      
+  }
+  function handlePrice(e){
+    setPrice(e)      
+  }
+  function handleValidity(e){
+    setValidity(e)      
+  }
+  function handleNoOfDev(e){
+    setNoOfDev(e)      
   }
 
   return (
@@ -165,8 +193,8 @@ const PackageManagement = () => {
                   </thead>
                   <tbody>
                   {packageArray.sort((a,b)=> a.packageId>b.packageId ? 1 : -1).map((pack, index) => {
-                    console.log(pack);
                     return(
+                      <>
                     <tr>
                     <td>{pack.packageId}</td>
                       <td>{pack.packageTitle}</td>
@@ -190,11 +218,8 @@ const PackageManagement = () => {
                             <DropdownItem
                             href="#pablo"
                             type="button"
-                            data-bs-toggle="modal"
-                            data-bs-target="#staticBackdrop"
-                            onClick={() => {
-                              showHidePackageFormHandler("show","edit", "Edit Package",pack.packageTitle, pack.packageId);
-                            }}
+                            onClick={(e, f, g, h)=>handleClick(pack.packageTitle, pack.packagePrice, pack.validity, pack.numberOfDevices)}
+                            data-bs-toggle="modal" data-bs-target={`#editBack${index}`}
                             >
                             Edit
                             </DropdownItem>
@@ -211,6 +236,39 @@ const PackageManagement = () => {
                             </UncontrolledDropdown>
                             </td>
                             </tr>
+                              <div class="modal fade" id={`editBack${index}`} data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                              <div class="modal-dialog">
+                                <div class="modal-content">
+                                  <div class="modal-header">
+                                    <h5 class="modal-title" id="staticBackdropLabel">Edit Package</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                  </div>
+                                  <div class="modal-body">
+                                  <form>
+                                  <div class="mb-3">
+                                    <input type="text" onChange={(e)=> handleName(e.target.value)} value={name} placeholder="Package Title" class="form-control" id="packageTitle" aria-describedby="emailHelp"/>
+                                  </div>
+                                  <div class="mb-3">
+                                    <input type="text" onChange={(e)=> handlePrice(e.target.value)} value={price} placeholder="Package Price" class="form-control" id="packagePrice" aria-describedby="emailHelp"/>
+                                  </div>
+                                  <div class="mb-3">
+                                    <input type="text" onChange={(e)=> handleValidity(e.target.value)} value={validity} placeholder="Validity (In Days)" class="form-control" id="packageValidity" aria-describedby="emailHelp"/>
+                                  </div>
+                                  <div class="mb-3">
+                                    <input type="text" onChange={(e)=> handleNoOfDev(e.target.value)} value={noOfDev} placeholder="Number of Devices" class="form-control" id="numberOfDevices" aria-describedby="emailHelp"/>
+                                  </div>
+                                  
+                              </form>
+                                  </div>
+                                  <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <button type="button" onClick={updatePackage} class="btn btn-primary" >Submit</button>
+                                  </div>
+                                </div>
+                              </div>
+                              </div>
+                            </>
+                            
                     )
                     })}
                   </tbody>
@@ -271,6 +329,8 @@ const PackageManagement = () => {
             </Card>
           </div>
         </Row>
+
+        
 
         {/* Package Pop-up form start */}
         <div className="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -339,7 +399,7 @@ const PackageManagement = () => {
           </div>
         </div>
         <div
-          className="addCategory d-flex align-items-center justify-content-center text-light"
+          className="addPackage d-flex align-items-center justify-content-center text-light"
           type="button"
           data-bs-toggle="modal"
           data-bs-target="#staticBackdrop"

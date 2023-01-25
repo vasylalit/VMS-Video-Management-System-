@@ -68,7 +68,7 @@ exports.findOne = (req, res)=>{
     })
 }
 
-// To get all the categories which having "is_deleted" = 0 (by default)
+// To get all the categories which having "is_deleted" = 1
 exports.findAllPackages = async(req, res) =>{
     const pacObj ={}
     try{
@@ -110,9 +110,9 @@ exports.update = (req, res) => {
   };
 
 
-/* Updating the category. Yes, updating the category, not deleting any more.👇
-But for the user, he is deleting the category.
-When user hit the API of delete category, the data will goes to the list of *findAllcategories*
+/* Updating the package. Yes, updating the package, not deleting any more.👇
+But for the user, he is deleting the package.
+When user hit the API of delete package, the data will goes to the list of *findAllPackages*
 */
 exports.delete = (req, res) => {
     const packageId = req.params.id;

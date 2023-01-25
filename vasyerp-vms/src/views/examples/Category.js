@@ -97,7 +97,7 @@ const Category = () => {
   //   name = category.categoryName
   // };
 
-  const showHideCategoryFormHandler = async(type,status, value,cName, catid) => {
+  const showHideCategoryFormHandler = async(type,status, value, cName, catid) => {
     if (status==="edit") {
       setAddEditBtn(true)
     }else{
