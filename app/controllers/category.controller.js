@@ -101,7 +101,7 @@ exports.update = (req, res) => {
       })
       .catch(err => {
         res.status(500).send({
-          message: "Error updating Category with id=" + id
+          message: "Error updating Category with id "
         });
       });
   };
